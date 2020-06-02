@@ -17,7 +17,7 @@ public abstract class BasePresenter<V extends BaseView> {
     protected abstract void initModel();
 
     public void onDestroy() {
-        models = null;
+        mView = null;
         if (models.size() > 0) {
             for (BaseModel model : models) {
                 model.onDestroy();
