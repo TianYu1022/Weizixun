@@ -32,15 +32,15 @@ public abstract class BaseFragment<P extends BasePresenter, V extends BaseView> 
         return view;
     }
 
-    private void initView() {
+    protected void initView() {
 
     }
 
-    private void initData() {
+    protected void initData() {
 
     }
 
-    private void initListener() {
+    protected void initListener() {
 
     }
 

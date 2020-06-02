@@ -1,20 +1,18 @@
 package com.tianyu.weizixun.ui.activity;
 
-import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.tianyu.weizixun.R;
-import com.tianyu.weizixun.base.BaseActivity;
+import com.tianyu.weizixun.base.BaseMvpActivity;
 import com.tianyu.weizixun.bean.LoginBean;
 import com.tianyu.weizixun.presenter.LoginPresenter;
 import com.tianyu.weizixun.view.LoginView;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class LoginActivity extends BaseActivity<LoginPresenter, LoginView> implements LoginView {
+public class LoginActivity extends BaseMvpActivity<LoginPresenter, LoginView> implements LoginView {
     @BindView(R.id.et_name)
     EditText etName;
     @BindView(R.id.et_pwd)
