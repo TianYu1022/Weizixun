@@ -127,11 +127,13 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void initListener() {
         super.initListener();
-        //切换fragment
         tabMain.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
+                //切换fragment
                 switchFragment(tab.getPosition());
+                //切换toolbar标题对应tab
+                toolbarMain.setTitle(tab.getText());
             }
 
             @Override
