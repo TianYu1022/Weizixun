@@ -19,6 +19,14 @@
             app:layout_constraintBottom_toTopOf="@id/view_line"
             app:layout_constraintTop_toBottomOf="@id/toolbar_main" />
 
+        <View
+            android:id="@+id/view_line"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/c_e7e7e7"
+            app:layout_constraintBottom_toTopOf="@id/tab_main"
+            app:layout_constraintTop_toBottomOf="@id/fl_container" />
+
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar_main"
             android:layout_width="match_parent"
@@ -34,17 +42,11 @@
             android:background="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/view_line"
+            app:tabBackground="@color/transparent"
             app:tabIndicatorHeight="0dp"
+            app:tabRippleColor="@color/transparent"
             app:tabSelectedTextColor="@color/colorPrimary"
             app:tabTextColor="@color/black" />
-
-        <View
-            android:id="@+id/view_line"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/c_e7e7e7"
-            app:layout_constraintBottom_toTopOf="@id/tab_main"
-            app:layout_constraintTop_toBottomOf="@id/fl_container" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
