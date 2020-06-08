@@ -11,17 +11,17 @@ import com.tianyu.weizixun.utils.RxUtil;
 public class LoginModel extends BaseModel {
     public void login(String name, String password, LoginCallback callback) {
         HttpManager.getHttpManager()
-                .getApiService(ApiService.baseLoginUrl, ApiService.class)
+                .getApiService(ApiService.baseUrl, ApiService.class)
                 .login(name, password)
                 .compose(RxUtil.rxFlowableTransformer())
                 .subscribe(new BaseObserver<LoginBean>() {
                     @Override
                     protected void onSuccess(LoginBean loginBean) {
-                        int errorCode = loginBean.getErrorCode();
-                        if (errorCode == 0) {
+                        String errorCode = loginBean.getCode();
+                        if (errorCode.equals("200")) {
                             callback.onSuccess(loginBean);
                         } else {
-                            callback.onFail(loginBean.getErrorMsg());
+                            callback.onFail("账号或密码错误");
                         }
                     }
                 });

@@ -4,27 +4,82 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="20dp"
     tools:context=".ui.activity.LoginActivity">
+
+    <Button
+        android:id="@+id/btn_login"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:text="登录"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/btn_register"
+        app:layout_constraintTop_toBottomOf="@id/et_pwd" />
+
+    <Button
+        android:id="@+id/btn_register"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:text="注册"
+        app:layout_constraintLeft_toRightOf="@id/btn_login"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/et_pwd" />
 
     <EditText
         android:id="@+id/et_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="anfly"
+        android:hint="输入账号"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/et_pwd"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="123456"
+        android:hint="输入密码"
+        android:inputType="textPassword"
         app:layout_constraintTop_toBottomOf="@id/et_name" />
 
-    <Button
-        android:id="@+id/btn_login"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="登录"
-        app:layout_constraintTop_toBottomOf="@id/et_pwd" />
+    <ImageView
+        android:id="@+id/iv_share"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_margin="30dp"
+        android:src="@drawable/umeng_socialize_share_web"
+        app:layout_constraintLeft_toLeftOf="@id/btn_login"
+        app:layout_constraintRight_toRightOf="@id/btn_register"
+        app:layout_constraintTop_toBottomOf="@id/btn_register" />
+
+    <ImageView
+        android:id="@+id/iv_login_qq"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="70dp"
+        android:src="@drawable/umeng_socialize_qq"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_login_sina"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginBottom="70dp"
+        android:src="@drawable/umeng_socialize_sina"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/iv_login_qq" />
+
+    <ImageView
+        android:id="@+id/iv_login_wechat"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginBottom="70dp"
+        android:src="@drawable/umeng_socialize_wechat"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/iv_login_qq" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
