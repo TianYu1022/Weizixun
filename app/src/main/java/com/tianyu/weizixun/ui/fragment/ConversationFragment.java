@@ -9,13 +9,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.tianyu.weizixun.R;
+import com.tianyu.weizixun.base.BaseFragment;
 
-public class ConversationFragment extends Fragment {
-
+/**
+ * 会话
+ */
+public class ConversationFragment extends BaseFragment {
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_conversation, container, false);
+    protected int getLayoutId() {
+        return R.layout.fragment_conversation;
     }
 }

@@ -10,10 +10,10 @@ import com.tianyu.weizixun.utils.RxUtil;
 
 
 public class RegisterModel extends BaseModel {
-    public void register(String userid, String psd, String accessToken, String typeid, RegisterCallback callback) {
+    public void register(String userid, String psd, String pwd, RegisterCallback callback) {
         HttpManager.getHttpManager()
                 .getApiService(ApiService.baseUrl, ApiService.class)
-                .register(userid, psd, accessToken, typeid)
+                .register(userid, psd, pwd)
                 .compose(RxUtil.rxFlowableTransformer())
                 .subscribe(new BaseObserver<RegisterBean>() {
                     @Override

@@ -17,8 +17,8 @@ public class LoginModel extends BaseModel {
                 .subscribe(new BaseObserver<LoginBean>() {
                     @Override
                     protected void onSuccess(LoginBean loginBean) {
-                        String errorCode = loginBean.getCode();
-                        if (errorCode.equals("200")) {
+                        int errorCode = loginBean.getErrorCode();
+                        if (errorCode == 0) {
                             callback.onSuccess(loginBean);
                         } else {
                             callback.onFail("账号或密码错误");

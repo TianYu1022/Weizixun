@@ -2,7 +2,7 @@ package com.tianyu.weizixun.ui.activity;
 
 import android.Manifest;
 import android.content.Intent;
-import android.os.Build;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -12,10 +12,14 @@ import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
 
+import com.hyphenate.EMCallBack;
+import com.hyphenate.chat.EMClient;
 import com.tianyu.weizixun.R;
 import com.tianyu.weizixun.base.BaseMvpActivity;
 import com.tianyu.weizixun.bean.LoginBean;
+import com.tianyu.weizixun.common.Constants;
 import com.tianyu.weizixun.presenter.LoginPresenter;
+import com.tianyu.weizixun.utils.SharedPreferencesUtil;
 import com.tianyu.weizixun.view.LoginView;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMAuthListener;
@@ -46,6 +50,8 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter, LoginView> im
     ImageView ivLoginSina;
     @BindView(R.id.iv_login_wechat)
     ImageView ivLoginWechat;
+    @BindView(R.id.btn_im_login)
+    Button btnImLogin;
     private String TAG = "LoginActivity";
 
     @Override
@@ -66,6 +72,16 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter, LoginView> im
     @Override
     public void onSuccess(LoginBean loginBean) {
         toast("登陆成功");
+        goToMainActivity();
+        finish();
+    }
+
+    /**
+     * 跳转到MainActivity
+     */
+    private void goToMainActivity() {
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        startActivity(intent);
     }
 
     @Override
@@ -92,27 +108,40 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter, LoginView> im
     @Override
     protected void initView() {
         super.initView();
-        initPermisson();
+        initPermission();
+        //是否登录过
+        if (EMClient.getInstance().isLoggedInBefore()) {
+            goToMainActivity();
+            finish();
+        }
     }
 
     /**
      * 获取权限
      */
-    private void initPermisson() {
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
-            String[] mPermissionList = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    Manifest.permission.READ_EXTERNAL_STORAGE,};
-            ActivityCompat.requestPermissions(this, mPermissionList, 123);
-        }
+    private void initPermission() {
+        String[] pers = {
+                Manifest.permission.RECORD_AUDIO,
+                Manifest.permission.CAMERA,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.READ_PHONE_STATE,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+        };
+        ActivityCompat.requestPermissions(this, pers, 100);
     }
 
-    @OnClick({R.id.btn_login, R.id.btn_register, R.id.iv_share, R.id.iv_login_qq, R.id.iv_login_sina, R.id.iv_login_wechat})
+    @OnClick({R.id.btn_login, R.id.btn_register, R.id.iv_share, R.id.iv_login_qq, R.id.iv_login_sina, R.id.iv_login_wechat
+            , R.id.btn_im_login})
     public void onViewClicked(View view) {
+        String name = etName.getText().toString().trim();
+        String pwd = etPwd.getText().toString().trim();
         switch (view.getId()) {
             case R.id.btn_login:
-                String name = etName.getText().toString().trim();
-                String pwd = etPwd.getText().toString().trim();
                 mPresenter.login(name, pwd);
+                break;
+            case R.id.btn_im_login:
+                loginIm(name, pwd);
                 break;
             case R.id.btn_register:
                 Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
@@ -130,6 +159,57 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter, LoginView> im
             case R.id.iv_login_wechat:
                 login(SHARE_MEDIA.WEIXIN);
                 break;
+        }
+    }
+
+    /**
+     * 环信IM三方登陆
+     *
+     * @param name
+     * @param pwd
+     */
+    private void loginIm(String name, String pwd) {
+        if (TextUtils.isEmpty(name)) {
+            toast("请输入账号");
+        } else if (TextUtils.isEmpty(pwd)) {
+            toast("请输入密码");
+        } else {
+            EMClient.getInstance().login(name, pwd, new EMCallBack() {
+                @Override
+                public void onSuccess() {
+                    EMClient.getInstance().groupManager().loadAllGroups();
+                    EMClient.getInstance().chatManager().loadAllConversations();
+                    Log.e("TAG", "登录成功！");
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
+                            //登录成功就保存登录的用户名，为聊天提供聊天方curName
+                            SharedPreferencesUtil.setParam(LoginActivity.this, Constants.NAME, name);
+                            //跳转到mainactivity
+                            goToMainActivity();
+                            //关闭页面
+                            finish();
+                        }
+                    });
+                }
+
+                @Override
+                public void onError(int i, String s) {
+                    Log.e("TAG", "登录失败：" + s);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(LoginActivity.this, "登录失败", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+
+                @Override
+                public void onProgress(int i, String s) {
+
+                }
+            });
         }
     }
 
@@ -249,4 +329,5 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter, LoginView> im
             Log.e("TAG", "logMap: " + entry.getKey() + "," + entry.getValue());
         }
     }
+
 }

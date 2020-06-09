@@ -34,6 +34,7 @@ android {
 
     /**
      * 签名文件的密码：
+     * 打包apk后false改为true
      */
     buildTypes {
         release {
@@ -47,6 +48,21 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    /**
+     * .son配置 环信IM
+     */
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+
+    /**
+     * 用户集成 SDK 后使用 HttpClient 报错
+     * use legacy for android > 6.0
+     */
+    useLibrary 'org.apache.http.legacy'
 
 }
 
@@ -63,6 +79,7 @@ dependencies {
     implementation files('libs\\umeng-share-wechat-simplify-7.0.2.jar')
     implementation files('libs\\umeng-shareboard-widget-7.0.2.jar')
     implementation files('libs\\umeng-sharetool-7.0.2.jar')
+    implementation files('libs\\hyphenatechat_3.6.7.jar')
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'

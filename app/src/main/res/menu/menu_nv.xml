@@ -7,4 +7,8 @@
     <item
         android:id="@+id/item_wechat"
         android:title="微信精选" />
+
+    <item
+        android:id="@+id/item_logout"
+        android:title="退出登录 " />
 </menu>

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/c_e7e7e7"
     android:padding="40dp"
     tools:context=".ui.activity.RegisterActivity">
 
@@ -13,20 +14,40 @@
         android:layout_height="wrap_content"
         android:layout_margin="40dp"
         android:text="注册"
-        app:layout_constraintTop_toBottomOf="@id/et_pwd_reg" />
+        app:layout_constraintTop_toBottomOf="@id/et_psw_reg" />
+
+    <Button
+        android:id="@+id/btn_im_reg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="40dp"
+        android:layout_marginTop="48dp"
+        android:text="IM注册"
+        app:layout_constraintTop_toBottomOf="@id/btn_reg"
+        tools:layout_editor_absoluteX="80dp" />
 
     <EditText
         android:id="@+id/et_pwd_reg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
+        android:hint="输入密码"
         app:layout_constraintTop_toBottomOf="@id/et_name_reg" />
+
+    <EditText
+        android:id="@+id/et_psw_reg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:hint="确认密码"
+        app:layout_constraintTop_toBottomOf="@id/et_pwd_reg" />
 
     <EditText
         android:id="@+id/et_name_reg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
+        android:hint="输入账号"
         app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,10 +2,12 @@ package com.tianyu.weizixun.ui.activity;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -18,6 +20,8 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
+import com.hyphenate.EMCallBack;
+import com.hyphenate.chat.EMClient;
 import com.tianyu.weizixun.R;
 import com.tianyu.weizixun.base.BaseActivity;
 import com.tianyu.weizixun.ui.fragment.ContactsFragment;
@@ -50,7 +54,7 @@ public class MainActivity extends BaseActivity {
     protected void initView() {
         super.initView();
         //设置toolbar
-        toolbarMain.setLogo(R.mipmap.ic_launcher_round);
+        toolbarMain.setLogo(R.drawable.ic_icon);
         toolbarMain.setTitle(getResources().getString(R.string.conversation));
         toolbarMain.setTitleTextColor(Color.WHITE);
         //设置支持toolbar
@@ -147,7 +151,7 @@ public class MainActivity extends BaseActivity {
             }
         });
 
-        //侧滑菜单
+        //侧滑菜单划出
         dlMain.addDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
             public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
@@ -189,6 +193,59 @@ public class MainActivity extends BaseActivity {
             }
         });
 
+        //侧滑点击事件
+        nvMain.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                switch (menuItem.getItemId()) {
+                    case R.id.item_zhihu:
+
+                        break;
+                    case R.id.item_wechat:
+
+                        break;
+                    case R.id.item_logout:
+                        logout();
+                        break;
+                }
+                return false;
+            }
+        });
+    }
+
+    /**
+     * 退出登录
+     */
+    private void logout() {
+        EMClient.getInstance().logout(true, new EMCallBack() {
+            @Override
+            public void onSuccess() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(MainActivity.this, "登出成功", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                });
+            }
+
+            @Override
+            public void onError(int i, String s) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(MainActivity.this, "登出失败：" + s, Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onProgress(int i, String s) {
+
+            }
+        });
     }
 
     @Override

@@ -1,70 +1,111 @@
 package com.tianyu.weizixun.bean;
 
 
+import java.util.List;
+
 public class LoginBean {
+
     /**
-     * code : 200
-     * message : 认证成功
-     * user : {"userid":"anfly","password":"123456","name":"783xpD","headerpic":"http://47.110.151.50/p6image/img/per.jpg"}
-     * token : eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXNzd29yZCI6IjEyMzQ1NiIsImV4cCI6MTU5MTc3MjMyOSwidXNlcm5hbWUiOiJnb3VkYW4ifQ.3q6L2N1Oc1vp31VinKeNe-VG__tLd48TnuuejViJ3xE
+     * data : {"admin":false,"chapterTops":[],"collectIds":[],"email":"","icon":"","id":66453,"nickname":"supertianyu","password":"","publicName":"supertianyu","token":"","type":0,"username":"supertianyu"}
+     * errorCode : 0
+     * errorMsg :
      */
 
-    private String code;
-    private String message;
-    private UserBean user;
-    private String token;
+    private DataBean data;
+    private int errorCode;
+    private String errorMsg;
 
-    public String getCode() {
-        return code;
+    public DataBean getData() {
+        return data;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setData(DataBean data) {
+        this.data = data;
     }
 
-    public String getMessage() {
-        return message;
+    public int getErrorCode() {
+        return errorCode;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setErrorCode(int errorCode) {
+        this.errorCode = errorCode;
     }
 
-    public UserBean getUser() {
-        return user;
+    public String getErrorMsg() {
+        return errorMsg;
     }
 
-    public void setUser(UserBean user) {
-        this.user = user;
+    public void setErrorMsg(String errorMsg) {
+        this.errorMsg = errorMsg;
     }
 
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public static class UserBean {
+    public static class DataBean {
         /**
-         * userid : anfly
-         * password : 123456
-         * name : 783xpD
-         * headerpic : http://47.110.151.50/p6image/img/per.jpg
+         * admin : false
+         * chapterTops : []
+         * collectIds : []
+         * email :
+         * icon :
+         * id : 66453
+         * nickname : supertianyu
+         * password :
+         * publicName : supertianyu
+         * token :
+         * type : 0
+         * username : supertianyu
          */
 
-        private String userid;
+        private boolean admin;
+        private String email;
+        private String icon;
+        private int id;
+        private String nickname;
         private String password;
-        private String name;
-        private String headerpic;
+        private String publicName;
+        private String token;
+        private int type;
+        private String username;
+        private List<?> chapterTops;
+        private List<?> collectIds;
 
-        public String getUserid() {
-            return userid;
+        public boolean isAdmin() {
+            return admin;
         }
 
-        public void setUserid(String userid) {
-            this.userid = userid;
+        public void setAdmin(boolean admin) {
+            this.admin = admin;
+        }
+
+        public String getEmail() {
+            return email;
+        }
+
+        public void setEmail(String email) {
+            this.email = email;
+        }
+
+        public String getIcon() {
+            return icon;
+        }
+
+        public void setIcon(String icon) {
+            this.icon = icon;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public String getNickname() {
+            return nickname;
+        }
+
+        public void setNickname(String nickname) {
+            this.nickname = nickname;
         }
 
         public String getPassword() {
@@ -75,20 +116,52 @@ public class LoginBean {
             this.password = password;
         }
 
-        public String getName() {
-            return name;
+        public String getPublicName() {
+            return publicName;
         }
 
-        public void setName(String name) {
-            this.name = name;
+        public void setPublicName(String publicName) {
+            this.publicName = publicName;
         }
 
-        public String getHeaderpic() {
-            return headerpic;
+        public String getToken() {
+            return token;
         }
 
-        public void setHeaderpic(String headerpic) {
-            this.headerpic = headerpic;
+        public void setToken(String token) {
+            this.token = token;
+        }
+
+        public int getType() {
+            return type;
+        }
+
+        public void setType(int type) {
+            this.type = type;
+        }
+
+        public String getUsername() {
+            return username;
+        }
+
+        public void setUsername(String username) {
+            this.username = username;
+        }
+
+        public List<?> getChapterTops() {
+            return chapterTops;
+        }
+
+        public void setChapterTops(List<?> chapterTops) {
+            this.chapterTops = chapterTops;
+        }
+
+        public List<?> getCollectIds() {
+            return collectIds;
+        }
+
+        public void setCollectIds(List<?> collectIds) {
+            this.collectIds = collectIds;
         }
     }
 }

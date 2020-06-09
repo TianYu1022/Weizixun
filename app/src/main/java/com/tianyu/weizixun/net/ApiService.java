@@ -9,33 +9,32 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
 
 public interface ApiService {
-    String baseUrl = "http://47.110.151.50/p6/";
+//    String baseUrl = "http://47.110.151.50/p6/";
+    String baseUrl = "https://www.wanandroid.com/user/";
 
     /**
      * 注册,
      *
-     * @param userid
-     * @param psd
-     * @param accessToken 三方平台唯一标识,可选参数,三方注册使用
-     * @param typeid      ,可选参数,三方注册使用,三方平台类型,1是qq,2是微信,3微博
+     * @param username 用户名
+     * @param password 密码
+     * @param repassword 确认密码
      * @return
      */
-    @POST("register.do")
+    @POST("register")
     @FormUrlEncoded
-    Flowable<RegisterBean> register(@Field("userid") String userid,
-                                    @Field("password") String psd,
-                                    @Field("accessToken") String accessToken,
-                                    @Field("typeid") String typeid);
+    Flowable<RegisterBean> register(@Field("username") String username,
+                                    @Field("password") String password,
+                                    @Field("repassword") String repassword);
 
     /**
      * 账号密码登录
      *
-     * @param userid
-     * @param psd
+     * @param username  用户名
+     * @param password  密码
      * @return
      */
-    @POST("login.do")
+    @POST("login")
     @FormUrlEncoded
-    Flowable<LoginBean> login(@Field("userid") String userid,
-                              @Field("password") String psd);
+    Flowable<LoginBean> login(@Field("username") String username,
+                              @Field("password") String password);
 }
