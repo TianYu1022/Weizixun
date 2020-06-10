@@ -1,14 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
+        android:icon="@drawable/icon_zhihu"
         android:id="@+id/item_zhihu"
         android:title="知乎" />
 
     <item
+        android:icon="@drawable/icon_wx"
         android:id="@+id/item_wechat"
         android:title="微信精选" />
 
     <item
+        android:icon="@drawable/icon_chat_group"
+        android:id="@+id/item_chat_group"
+        android:title="群聊" />
+
+    <item
+        android:icon="@drawable/icon_logout"
         android:id="@+id/item_logout"
         android:title="退出登录 " />
 </menu>

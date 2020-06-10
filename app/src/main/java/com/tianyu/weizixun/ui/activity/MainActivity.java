@@ -112,8 +112,12 @@ public class MainActivity extends BaseActivity {
     }
 
     private void initTabs() {
+        ArrayList<Integer> icons = new ArrayList<>();
+        icons.add(R.drawable.selector_conversation);
+        icons.add(R.drawable.selector_contacts);
+        icons.add(R.drawable.selector_discovery);
         for (int i = 0; i < titles.size(); i++) {
-            tabMain.addTab(tabMain.newTab().setText(titles.get(i)));
+            tabMain.addTab(tabMain.newTab().setIcon(icons.get(i)).setText(titles.get(i)));
         }
     }
 
@@ -203,6 +207,10 @@ public class MainActivity extends BaseActivity {
                         break;
                     case R.id.item_wechat:
 
+                        break;
+                    case R.id.item_chat_group:
+                        Intent intent = new Intent(MainActivity.this, ChatGroupActivity.class);
+                        startActivity(intent);
                         break;
                     case R.id.item_logout:
                         logout();

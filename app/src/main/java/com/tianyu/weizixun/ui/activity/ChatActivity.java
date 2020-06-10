@@ -1,5 +1,8 @@
 package com.tianyu.weizixun.ui.activity;
 
+import android.media.MediaPlayer;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,8 +20,10 @@ import com.tianyu.weizixun.R;
 import com.tianyu.weizixun.adapter.EMMessageAdapter;
 import com.tianyu.weizixun.base.BaseActivity;
 import com.tianyu.weizixun.common.Constants;
+import com.tianyu.weizixun.utils.AudioUtil;
 import com.tianyu.weizixun.utils.SharedPreferencesUtil;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,6 +49,8 @@ public class ChatActivity extends BaseActivity {
     private ArrayList<EMMessage> list;
     private EMMessageAdapter adapter;
     private EMMessageListener msgListener;
+    private String mPath;
+    private long mTime;
 
     @Override
     protected int getLayoutId() {
@@ -57,9 +64,60 @@ public class ChatActivity extends BaseActivity {
                 send();
                 break;
             case R.id.btn_record:
+                record();
                 break;
             case R.id.btn_send_audio:
+                sendAudio();
                 break;
+        }
+    }
+
+    /**
+     * 发送录音
+     */
+    private void sendAudio() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                //voiceUri为语音文件本地资源标志符，length为录音时间(秒)
+                EMMessage message = EMMessage.createVoiceSendMessage(mPath, (int) mTime, toName);
+                EMClient.getInstance().chatManager().sendMessage(message);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        //录音添加到消息中
+                        list.add(message);
+                        //刷新适配器
+                        adapter.notifyDataSetChanged();
+                    }
+                });
+            }
+        }).start();
+    }
+
+    /**
+     * 录音
+     */
+    private void record() {
+        //是否正在录音
+        boolean isRecording = AudioUtil.isRecording;
+        if (isRecording) {
+            btnRecord.setText("开始录音");
+            AudioUtil.stopRecord();
+        } else {
+            btnRecord.setText("停止录音");
+            AudioUtil.startRecord(new AudioUtil.ResultCallBack() {
+                @Override
+                public void onSuccess(String path, long time) {
+                    mPath = path;
+                    mTime = time;
+                }
+
+                @Override
+                public void onFail(String msg) {
+                    Log.e("TAG", msg);
+                }
+            });
         }
     }
 
@@ -105,6 +163,13 @@ public class ChatActivity extends BaseActivity {
         rv.setLayoutManager(new LinearLayoutManager(this));
         adapter = new EMMessageAdapter(list, this, toName, curName);
         rv.setAdapter(adapter);
+        //点击列表的语言消息播放语言
+        adapter.setOnItemClick(new EMMessageAdapter.OnItemClick() {
+            @Override
+            public void onItemClick(String localUrl) {
+                playAudio(localUrl);
+            }
+        });
     }
 
     /**
@@ -117,6 +182,28 @@ public class ChatActivity extends BaseActivity {
         initReceiver();
         //保存历史消息
         initHistory();
+    }
+
+    /**
+     * 播放语言
+     * @param localUrl
+     */
+    private void playAudio(String localUrl) {
+        MediaPlayer mediaPlayer = new MediaPlayer();
+        try {
+            boolean playing = mediaPlayer.isPlaying();
+            if (playing) {
+                mediaPlayer.pause();
+            }
+            if (TextUtils.isEmpty(localUrl)) {
+                return;
+            }
+            mediaPlayer.setDataSource(localUrl);
+            mediaPlayer.prepare();
+            mediaPlayer.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void initHistory() {

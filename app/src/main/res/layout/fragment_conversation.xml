@@ -5,6 +5,8 @@
     android:layout_height="match_parent"
     tools:context=".ui.fragment.ConversationFragment">
 
-
-
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_conversation"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </FrameLayout>

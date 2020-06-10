@@ -13,4 +13,6 @@
     <color name="c_666666">#666666</color>
     <color name="red">#ff0000</color>
     <color name="purple">#ff00ff</color>
+    <color name="iconMy">#1296db</color>
+    <color name="iconMyNo">#dbdbdb</color>
 </resources>

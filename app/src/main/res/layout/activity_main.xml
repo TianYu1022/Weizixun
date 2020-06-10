@@ -28,6 +28,7 @@
             app:layout_constraintTop_toBottomOf="@id/fl_container" />
 
         <androidx.appcompat.widget.Toolbar
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             android:id="@+id/toolbar_main"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -45,8 +46,8 @@
             app:tabBackground="@color/transparent"
             app:tabIndicatorHeight="0dp"
             app:tabRippleColor="@color/transparent"
-            app:tabSelectedTextColor="@color/colorPrimary"
-            app:tabTextColor="@color/black" />
+            app:tabSelectedTextColor="@color/iconMy"
+            app:tabTextColor="@color/iconMyNo" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
