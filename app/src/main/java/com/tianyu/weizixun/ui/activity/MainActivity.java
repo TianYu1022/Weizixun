@@ -209,8 +209,10 @@ public class MainActivity extends BaseActivity {
 
                         break;
                     case R.id.item_chat_group:
-                        Intent intent = new Intent(MainActivity.this, ChatGroupActivity.class);
-                        startActivity(intent);
+                        startActivity(new Intent(MainActivity.this, ChatGroupActivity.class));
+                        break;
+                    case R.id.item_map:
+                        startActivity(new Intent(MainActivity.this, MapActivity.class));
                         break;
                     case R.id.item_logout:
                         logout();

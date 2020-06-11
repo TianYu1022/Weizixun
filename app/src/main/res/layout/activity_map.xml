@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.activity.MapActivity">
+
+    <Button
+        android:id="@+id/btn_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="定位"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btn_pio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="PIO检索"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_location" />
+
+    <Button
+        android:id="@+id/btn_marker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="覆盖物"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_pio" />
+
+    <Button
+        android:id="@+id/btn_guide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="导航"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_marker" />
+
+    <Button
+        android:id="@+id/btn_path"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="路径规划"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_guide" />
+
+    <Button
+        android:id="@+id/btn_map_normal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="普通地图"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_path" />
+
+    <Button
+        android:id="@+id/btn_map_satellite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="卫星地图"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_map_normal" />
+
+    <Button
+        android:id="@+id/btn_open_heat_map"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="开热力图"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_map_satellite" />
+
+    <Button
+        android:id="@+id/btn_close_heat_map"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="关热力图"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_open_heat_map" />
+
+
+    <com.baidu.mapapi.map.MapView
+        android:id="@+id/mapview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

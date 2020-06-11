@@ -4,6 +4,10 @@ import android.app.ActivityManager;
 import android.app.Application;
 import android.content.pm.PackageManager;
 
+import androidx.multidex.MultiDex;
+
+import com.baidu.mapapi.CoordType;
+import com.baidu.mapapi.SDKInitializer;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMOptions;
 import com.umeng.commonsdk.UMConfigure;
@@ -19,8 +23,22 @@ public class WzxApplication extends Application {
     public void onCreate() {
         super.onCreate();
         app = this;
+        //报错 Cannot fit requested classes in a single dex file (# methods: 66822 > 65536)
+        MultiDex.install(this);
         initUmeng();
         initIm();
+        initMap();
+    }
+
+    /**
+     * 初始化BaiDuMap
+     */
+    private void initMap() {
+        //在使用SDK各组件之前初始化context信息，传入ApplicationContext
+        SDKInitializer.initialize(this);
+        //自4.3.0起，百度地图SDK所有接口均支持百度坐标和国测局坐标，用此方法设置您使用的坐标类型.
+        //包括BD09LL和GCJ02两种坐标，默认是BD09LL坐标。
+        SDKInitializer.setCoordType(CoordType.BD09LL);
     }
 
     /**
@@ -62,6 +80,7 @@ public class WzxApplication extends Application {
 
     /**
      * 如何获取processAppName请参考以下方法。
+     *
      * @param pID
      * @return
      */
