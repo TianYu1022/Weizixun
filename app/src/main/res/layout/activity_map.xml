@@ -78,6 +78,30 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_open_heat_map" />
 
+    <Button
+        android:id="@+id/btn_road"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="实时路况"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_close_heat_map" />
+
+    <Button
+        android:id="@+id/btn_close_road"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="关闭路况"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_road" />
+
+    <Button
+        android:id="@+id/btn_marker_anim"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="动画"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_close_road" />
+
 
     <com.baidu.mapapi.map.MapView
         android:id="@+id/mapview"

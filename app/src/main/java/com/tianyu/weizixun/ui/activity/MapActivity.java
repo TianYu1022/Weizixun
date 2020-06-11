@@ -10,16 +10,28 @@ import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
+import com.baidu.mapapi.animation.Animation;
+import com.baidu.mapapi.animation.Transformation;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationData;
-import com.baidu.mapapi.map.OverlayOptions;
+import com.baidu.mapapi.map.Overlay;
 import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.search.poi.OnGetPoiSearchResultListener;
+import com.baidu.mapapi.search.poi.PoiCitySearchOption;
+import com.baidu.mapapi.search.poi.PoiDetailResult;
+import com.baidu.mapapi.search.poi.PoiDetailSearchResult;
+import com.baidu.mapapi.search.poi.PoiIndoorResult;
+import com.baidu.mapapi.search.poi.PoiResult;
+import com.baidu.mapapi.search.poi.PoiSearch;
 import com.tianyu.weizixun.R;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,6 +54,7 @@ public class MapActivity extends AppCompatActivity {
     private BaiduMap baiduMap;
     private LocationClient mLocationClient;
     private BDLocation mLocation;
+    private PoiSearch mPoiSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +66,8 @@ public class MapActivity extends AppCompatActivity {
     }
 
     @OnClick({R.id.btn_location, R.id.btn_pio, R.id.btn_marker, R.id.btn_guide, R.id.btn_path, R.id.btn_map_normal,
-            R.id.btn_map_satellite, R.id.btn_open_heat_map, R.id.btn_close_heat_map})
+            R.id.btn_map_satellite, R.id.btn_open_heat_map, R.id.btn_close_heat_map, R.id.btn_road, R.id.btn_close_road,
+            R.id.btn_marker_anim})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_location:
@@ -89,7 +103,44 @@ public class MapActivity extends AppCompatActivity {
                 //关闭热力图
                 baiduMap.setBaiduHeatMapEnabled(false);
                 break;
+            case R.id.btn_road:
+                //实时路况
+                //开启交通图
+                baiduMap.setTrafficEnabled(true);
+                break;
+            case R.id.btn_close_road:
+                //关闭交通图
+                baiduMap.setTrafficEnabled(false);
+                break;
+            case R.id.btn_marker_anim:
+                //动画
+                mapAnim();
+                break;
         }
+    }
+
+    private void mapAnim() {
+        //构造Icon列表
+        // 初始化bitmap 信息，不用时及时 recycle
+        BitmapDescriptor bdA = BitmapDescriptorFactory.fromResource(R.drawable.icon_marker);
+        BitmapDescriptor bdB = BitmapDescriptorFactory.fromResource(R.drawable.icon_marker_one);
+        BitmapDescriptor bdC = BitmapDescriptorFactory.fromResource(R.drawable.icon_marker_two);
+
+        ArrayList<BitmapDescriptor> giflist = new ArrayList<BitmapDescriptor>();
+        giflist.add(bdA);
+        giflist.add(bdB);
+        giflist.add(bdC);
+        //Marker位置坐标
+        LatLng llD = new LatLng(39.906965, 116.401394);
+        //构造MarkerOptions对象
+        MarkerOptions ooD = new MarkerOptions()
+                .position(llD)
+                .icons(giflist)
+                .zIndex(0)
+                .period(20);//定义刷新的帧间隔
+
+        //在地图上展示包含帧动画的Marker
+        Overlay mMarkerD = (Marker) (baiduMap.addOverlay(ooD));
     }
 
     /**
@@ -195,5 +246,6 @@ public class MapActivity extends AppCompatActivity {
         super.onDestroy();
         mLocationClient.stop();
         mapview.onDestroy();
+        mPoiSearch.destroy();
     }
 }
