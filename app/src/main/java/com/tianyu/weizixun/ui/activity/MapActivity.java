@@ -1,10 +1,22 @@
 package com.tianyu.weizixun.ui.activity;
 
+import android.Manifest;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Criteria;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
@@ -45,14 +57,15 @@ public class MapActivity extends AppCompatActivity {
     private BaiduMap baiduMap;
     private LocationClient mLocationClient;
     private BDLocation mLocation;
+    private LocationManager locationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
         ButterKnife.bind(this);
-        initView();
         initLocation();
+        initView();
     }
 
     @OnClick({R.id.btn_location, R.id.btn_pio, R.id.btn_marker, R.id.btn_guide, R.id.btn_path, R.id.btn_map_normal,
@@ -109,6 +122,7 @@ public class MapActivity extends AppCompatActivity {
         }
     }
 
+
     private void mapAnim() {
         //构造Icon列表
         // 初始化bitmap 信息，不用时及时 recycle
@@ -156,7 +170,14 @@ public class MapActivity extends AppCompatActivity {
         //改变地图的手势中心点（地图的中心点）
         //mLocation 是定位获取到的用户位置信息对象  MyLocationListener
         //用户的经纬度
-        LatLng latLng = new LatLng(mLocation.getLatitude(), mLocation.getLongitude());
+        LatLng latLng = null;
+        //如果没有得到用户的GPS服务
+        if (mLocation == null) {
+            //打开GPS
+            openGPS();
+        } else {
+            latLng = new LatLng(mLocation.getLatitude(), mLocation.getLongitude());
+        }
         //改变地图手势的中心点到用户位置
         baiduMap.setMapStatus(MapStatusUpdateFactory.newLatLng(latLng));
     }
@@ -205,7 +226,7 @@ public class MapActivity extends AppCompatActivity {
             if (location == null || mapview == null) {
                 return;
             }
-
+            Log.e("TAG", "onReceiveLocation: " + location);
             //用户位置信息
             mLocation = location;
 
@@ -217,7 +238,6 @@ public class MapActivity extends AppCompatActivity {
             baiduMap.setMyLocationData(locData);
         }
     }
-
 
     @Override
     protected void onResume() {
@@ -236,5 +256,43 @@ public class MapActivity extends AppCompatActivity {
         super.onDestroy();
         mLocationClient.stop();
         mapview.onDestroy();
+    }
+
+    /**
+     * 打开GPS服务
+     */
+    private void openGPS() {
+        new AlertDialog.Builder(MapActivity.this)
+                .setIcon(android.R.drawable.ic_dialog_info)
+                .setTitle(R.string.information)
+                .setMessage("没有开启定位")
+                .setNegativeButton(R.string.cancel, null)
+                .setPositiveButton(R.string.open, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                        startActivityForResult(intent, 887);
+                        dialogInterface.dismiss();
+                    }
+                })
+                .show();
+    }
+
+    /**
+     * 打开GPS回调
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case 887:
+                //开启GPS，重新添加地理监听
+                initLocation();
+                break;
+            default:
+                break;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }
