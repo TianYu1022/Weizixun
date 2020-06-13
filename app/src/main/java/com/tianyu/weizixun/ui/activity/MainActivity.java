@@ -203,7 +203,8 @@ public class MainActivity extends BaseActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.item_zhihu:
-
+                        Intent intent = new Intent(MainActivity.this, ZhihuActivity.class);
+                        startActivity(intent);
                         break;
                     case R.id.item_wechat:
 

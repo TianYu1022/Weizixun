@@ -11,7 +11,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.activity.WNaviGuideActivity"></activity>
+        <activity android:name=".ui.activity.ZhihuActivity"></activity>
+        <activity android:name=".ui.activity.WNaviGuideActivity" />
         <activity android:name=".ui.activity.MapActivity" />
         <activity android:name=".ui.activity.ChatGroupActivity" />
         <activity android:name=".ui.activity.ChatActivity" /> <!-- 用户集成 SDK 后使用 HttpClient 报错  Android 9.0添加： -->
@@ -99,8 +100,8 @@
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
-    </application>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /> <!-- 环信IM start -->
+    </application> <!-- 环信IM start -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
