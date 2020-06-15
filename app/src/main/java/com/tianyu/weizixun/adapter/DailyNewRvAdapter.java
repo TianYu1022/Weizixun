@@ -84,7 +84,6 @@ public class DailyNewRvAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         } else if (viewType == VIEW_TYPE_TWO) {
             ViewHolderTwo viewHolderTwo = (ViewHolderTwo) holder;
             viewHolderTwo.dailyTitle.setText(title.get(0));
-
         } else {
             ViewHolderThree viewHolderThree = (ViewHolderThree) holder;
             viewHolderThree.tvDailyTitle.setText(datas.get(position - 2).getTitle());
