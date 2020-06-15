@@ -1,6 +1,7 @@
 package com.tianyu.weizixun.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,11 @@ public class DailyNewRvAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private ArrayList<DailyNewsBean.TopStoriesBean> bannerDatas;
     private ArrayList<String> title;
     private final LayoutInflater from;
+    private OnItemClickListener onItemClickListener;
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
 
     public DailyNewRvAdapter(Context context, ArrayList<DailyNewsBean.StoriesBean> datas, ArrayList<DailyNewsBean.TopStoriesBean> bannerDatas, ArrayList<String> title) {
         this.context = context;
@@ -95,6 +101,14 @@ public class DailyNewRvAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                         .apply(RequestOptions.bitmapTransform(new CircleCrop()))
                         .into(viewHolderThree.ivDailyImg);
             }
+            viewHolderThree.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (onItemClickListener != null) {
+                        onItemClickListener.onItemClick(position - 2);
+                    }
+                }
+            });
         }
     }
 
@@ -144,5 +158,9 @@ public class DailyNewRvAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             super(view);
             ButterKnife.bind(this, view);
         }
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(int position);
     }
 }

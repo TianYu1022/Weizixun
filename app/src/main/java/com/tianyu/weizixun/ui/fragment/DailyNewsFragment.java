@@ -1,6 +1,7 @@
 package com.tianyu.weizixun.ui.fragment;
 
 import android.content.Intent;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -14,6 +15,7 @@ import com.tianyu.weizixun.base.BaseMvpFragment;
 import com.tianyu.weizixun.bean.DailyNewsBean;
 import com.tianyu.weizixun.presenter.DailyNewPresenter;
 import com.tianyu.weizixun.ui.activity.CalendarActivity;
+import com.tianyu.weizixun.ui.activity.DailyNewsDetailsActivity;
 import com.tianyu.weizixun.view.DailyNewView;
 
 import java.util.ArrayList;
@@ -98,14 +100,25 @@ public class DailyNewsFragment extends BaseMvpFragment<DailyNewPresenter, DailyN
             case 100:
                 if (resultCode == 200) {
                     date = data.getStringExtra("date");
-                    if (data != null) {
-                        mPresenter.getBeforeData(date);
-                        adapter.notifyDataSetChanged();
-                    } else {
-                        Toast.makeText(getActivity(), "未选择日期", Toast.LENGTH_SHORT).show();
-                    }
+                    mPresenter.getBeforeData(date);
+                    adapter.notifyDataSetChanged();
                 }
                 break;
         }
+    }
+
+    @Override
+    protected void initListener() {
+        super.initListener();
+        adapter.setOnItemClickListener(new DailyNewRvAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                Intent intent = new Intent(getActivity(), DailyNewsDetailsActivity.class);
+                intent.putExtra("url",datas.get(position).getUrl());
+                intent.putExtra("img",datas.get(position).getImages().get(0));
+                intent.putExtra("title",datas.get(position).getTitle());
+                startActivity(intent);
+            }
+        });
     }
 }
