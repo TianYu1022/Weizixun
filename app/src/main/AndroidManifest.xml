@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.tianyu.weizixun">
-
+    <!-- 环信IM start -->
     <application
         android:name=".common.WzxApplication"
         android:allowBackup="true"
@@ -11,7 +11,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.activity.ZhihuActivity"></activity>
+        <activity android:name=".ui.activity.CalendarActivity"></activity>
+        <activity android:name=".ui.activity.ZhihuActivity" />
         <activity android:name=".ui.activity.WNaviGuideActivity" />
         <activity android:name=".ui.activity.MapActivity" />
         <activity android:name=".ui.activity.ChatGroupActivity" />
@@ -100,7 +101,7 @@
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
-    </application> <!-- 环信IM start -->
+    </application>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />

@@ -1,27 +1,36 @@
 package com.tianyu.weizixun.ui.fragment;
 
+import android.content.Intent;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.tianyu.weizixun.R;
 import com.tianyu.weizixun.adapter.DailyNewRvAdapter;
 import com.tianyu.weizixun.base.BaseMvpFragment;
 import com.tianyu.weizixun.bean.DailyNewsBean;
 import com.tianyu.weizixun.presenter.DailyNewPresenter;
+import com.tianyu.weizixun.ui.activity.CalendarActivity;
 import com.tianyu.weizixun.view.DailyNewView;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 public class DailyNewsFragment extends BaseMvpFragment<DailyNewPresenter, DailyNewView> implements DailyNewView {
     @BindView(R.id.rv_daily_new)
     RecyclerView rvDailyNew;
+    @BindView(R.id.fbtn_calendar)
+    FloatingActionButton fbtnCalendar;
     private ArrayList<DailyNewsBean.StoriesBean> datas;
     private ArrayList<DailyNewsBean.TopStoriesBean> bannerDatas;
     private DailyNewRvAdapter adapter;
+    private ArrayList<String> title;
+    private String date;
 
     @Override
     protected int getLayoutId() {
@@ -34,7 +43,9 @@ public class DailyNewsFragment extends BaseMvpFragment<DailyNewPresenter, DailyN
         rvDailyNew.setLayoutManager(new LinearLayoutManager(getActivity()));
         datas = new ArrayList<>();
         bannerDatas = new ArrayList<>();
-        adapter = new DailyNewRvAdapter(getContext(),datas,bannerDatas);
+        title = new ArrayList<>();
+        title.add("今日新闻");
+        adapter = new DailyNewRvAdapter(getContext(), datas, bannerDatas, title);
         rvDailyNew.setAdapter(adapter);
     }
 
@@ -56,13 +67,45 @@ public class DailyNewsFragment extends BaseMvpFragment<DailyNewPresenter, DailyN
 
     @Override
     public void onSuccess(DailyNewsBean dailyNewsBean) {
-        datas.addAll(dailyNewsBean.getStories());
-        bannerDatas.addAll(dailyNewsBean.getTop_stories());
-        adapter.notifyDataSetChanged();
+        if (dailyNewsBean.getTop_stories() != null) {
+            datas.addAll(dailyNewsBean.getStories());
+            bannerDatas.addAll(dailyNewsBean.getTop_stories());
+            adapter.notifyDataSetChanged();
+        } else {
+            datas.clear();
+            title.clear();
+            title.add(date);
+            datas.addAll(dailyNewsBean.getStories());
+            adapter.notifyDataSetChanged();
+        }
     }
 
     @Override
     public void onFail(String error) {
         Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
+    }
+
+    @OnClick(R.id.fbtn_calendar)
+    public void onViewClicked() {
+        Intent intent = new Intent(getActivity(), CalendarActivity.class);
+        startActivityForResult(intent, 100);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case 100:
+                if (resultCode == 200) {
+                    date = data.getStringExtra("date");
+                    if (data != null) {
+                        mPresenter.getBeforeData(date);
+                        adapter.notifyDataSetChanged();
+                    } else {
+                        Toast.makeText(getActivity(), "未选择日期", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                break;
+        }
     }
 }

@@ -117,4 +117,7 @@ dependencies {
     * 报错 Cannot fit requested classes in a single dex file (# methods: 66822 > 65536)
     */
     implementation 'com.android.support:multidex:1.0.3'
+
+    //日历
+    implementation 'com.github.prolificinteractive:material-calendarview:1.6.0'
 }

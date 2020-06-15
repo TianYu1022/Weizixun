@@ -10,6 +10,7 @@
         android:id="@+id/vp_zhihu"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tab" />
 
     <com.google.android.material.tabs.TabLayout

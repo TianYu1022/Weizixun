@@ -29,12 +29,14 @@ public class DailyNewRvAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private Context context;
     private ArrayList<DailyNewsBean.StoriesBean> datas;
     private ArrayList<DailyNewsBean.TopStoriesBean> bannerDatas;
+    private ArrayList<String> title;
     private final LayoutInflater from;
 
-    public DailyNewRvAdapter(Context context, ArrayList<DailyNewsBean.StoriesBean> datas, ArrayList<DailyNewsBean.TopStoriesBean> bannerDatas) {
+    public DailyNewRvAdapter(Context context, ArrayList<DailyNewsBean.StoriesBean> datas, ArrayList<DailyNewsBean.TopStoriesBean> bannerDatas, ArrayList<String> title) {
         this.context = context;
         this.datas = datas;
         this.bannerDatas = bannerDatas;
+        this.title = title;
         from = LayoutInflater.from(context);
     }
 
@@ -80,6 +82,8 @@ public class DailyNewRvAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     })
                     .start();
         } else if (viewType == VIEW_TYPE_TWO) {
+            ViewHolderTwo viewHolderTwo = (ViewHolderTwo) holder;
+            viewHolderTwo.dailyTitle.setText(title.get(0));
 
         } else {
             ViewHolderThree viewHolderThree = (ViewHolderThree) holder;

@@ -55,6 +55,13 @@ public interface ApiService {
     Flowable<DailyNewsBean> getDailyNewsData();
 
     /**
+     * 获取往期日报
+     * @return
+     */
+    @GET("news/before/{date}")
+    Flowable<DailyNewsBean> getBeforeData(@Path("date") String date);
+
+    /**
      * 知乎专栏
      *
      * @return

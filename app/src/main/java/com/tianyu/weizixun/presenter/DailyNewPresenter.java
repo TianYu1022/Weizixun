@@ -13,6 +13,10 @@ public class DailyNewPresenter extends BasePresenter implements DailyNewCallback
         mModel.getData(this);
     }
 
+    public void getBeforeData(String date) {
+        mModel.getDeforeData(date, this);
+    }
+
     @Override
     protected void initModel() {
         mModel = new DailyNewModel();

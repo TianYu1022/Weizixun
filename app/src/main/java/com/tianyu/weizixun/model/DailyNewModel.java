@@ -20,4 +20,16 @@ public class DailyNewModel extends BaseModel {
                     }
                 });
     }
+
+    public void getDeforeData(String date, DailyNewCallback callback) {
+        new HttpManager().getApiService(ApiService.baseZhihuUrl, ApiService.class)
+                .getBeforeData(date)
+                .compose(RxUtil.rxFlowableTransformer())
+                .subscribe(new BaseObserver<DailyNewsBean>() {
+                    @Override
+                    protected void onSuccess(DailyNewsBean dailyNewsBean) {
+                        callback.onSuccess(dailyNewsBean);
+                    }
+                });
+    }
 }

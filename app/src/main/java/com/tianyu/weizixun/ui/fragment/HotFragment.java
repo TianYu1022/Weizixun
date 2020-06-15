@@ -1,19 +1,66 @@
 package com.tianyu.weizixun.ui.fragment;
 
-import android.os.Bundle;
 
-import androidx.fragment.app.Fragment;
+import android.widget.Toast;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.tianyu.weizixun.R;
+import com.tianyu.weizixun.adapter.HotRvAdapter;
+import com.tianyu.weizixun.base.BaseMvpFragment;
+import com.tianyu.weizixun.bean.HotNewsBean;
+import com.tianyu.weizixun.presenter.HotPresenter;
+import com.tianyu.weizixun.view.HotView;
 
-public class HotFragment extends Fragment {
+import java.util.ArrayList;
+
+import butterknife.BindView;
+
+public class HotFragment extends BaseMvpFragment<HotPresenter, HotView> implements HotView {
+    @BindView(R.id.rv_hotnews)
+    RecyclerView rvHotnews;
+    private ArrayList<HotNewsBean.RecentBean> datas;
+    private HotRvAdapter adapter;
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_hot, container, false);
+    protected int getLayoutId() {
+        return R.layout.fragment_hot;
+    }
+
+    @Override
+    protected void initView() {
+        super.initView();
+        rvHotnews.setLayoutManager(new LinearLayoutManager(getActivity()));
+        datas = new ArrayList<>();
+        adapter = new HotRvAdapter(getActivity(), datas);
+        rvHotnews.setAdapter(adapter);
+    }
+
+    @Override
+    protected void initData() {
+        super.initData();
+        mPresenter.getData();
+    }
+
+    @Override
+    protected HotView initMvpView() {
+        return this;
+    }
+
+    @Override
+    protected HotPresenter initMvpPresenter() {
+        return new HotPresenter();
+    }
+
+    @Override
+    public void onSuccess(HotNewsBean hotNewsBean) {
+        datas.addAll(hotNewsBean.getRecent());
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onFail(String error) {
+        Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
     }
 }
