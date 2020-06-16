@@ -13,6 +13,7 @@ import com.tianyu.weizixun.R;
 import com.tianyu.weizixun.adapter.DailyNewRvAdapter;
 import com.tianyu.weizixun.base.BaseMvpFragment;
 import com.tianyu.weizixun.bean.DailyNewsBean;
+import com.tianyu.weizixun.common.Constants;
 import com.tianyu.weizixun.presenter.DailyNewPresenter;
 import com.tianyu.weizixun.ui.activity.CalendarActivity;
 import com.tianyu.weizixun.ui.activity.DailyNewsDetailsActivity;
@@ -114,9 +115,9 @@ public class DailyNewsFragment extends BaseMvpFragment<DailyNewPresenter, DailyN
             @Override
             public void onItemClick(int position) {
                 Intent intent = new Intent(getActivity(), DailyNewsDetailsActivity.class);
-                intent.putExtra("url",datas.get(position).getUrl());
-                intent.putExtra("img",datas.get(position).getImages().get(0));
-                intent.putExtra("title",datas.get(position).getTitle());
+                intent.putExtra(Constants.ID, datas.get(position).getId());
+                intent.putExtra(Constants.IMAGE, datas.get(position).getImages().get(0));
+                intent.putExtra(Constants.TITLE, datas.get(position).getTitle());
                 startActivity(intent);
             }
         });

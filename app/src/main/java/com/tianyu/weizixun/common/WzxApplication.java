@@ -16,6 +16,8 @@ import com.umeng.socialize.PlatformConfig;
 import java.util.Iterator;
 import java.util.List;
 
+import cn.jpush.android.api.JPushInterface;
+
 public class WzxApplication extends Application {
     private static WzxApplication app;
 
@@ -28,6 +30,12 @@ public class WzxApplication extends Application {
         initUmeng();
         initIm();
         initMap();
+        initJPush();
+    }
+
+    private void initJPush() {
+        JPushInterface.setDebugMode(true);
+        JPushInterface.init(this);
     }
 
     /**

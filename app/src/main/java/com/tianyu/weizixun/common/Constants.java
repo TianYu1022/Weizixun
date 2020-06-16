@@ -10,4 +10,8 @@ public interface Constants {
 
     //登录的用户名
     String NAME = "name";
+
+    String ID = "ID";
+    String IMAGE = "imagePath";
+    String TITLE = "TITLE";
 }

@@ -1,7 +1,7 @@
 package com.tianyu.weizixun.net;
 
 import com.tianyu.weizixun.bean.DailyNewsBean;
-import com.tianyu.weizixun.bean.HotNewArticleBean;
+import com.tianyu.weizixun.bean.DailyNewsDetailsBean;
 import com.tianyu.weizixun.bean.HotNewsBean;
 import com.tianyu.weizixun.bean.LoginBean;
 import com.tianyu.weizixun.bean.RegisterBean;
@@ -55,7 +55,17 @@ public interface ApiService {
     Flowable<DailyNewsBean> getDailyNewsData();
 
     /**
+     * 知乎日报详情内容
+     *
+     * @param id ID从HotNewsBean中取
+     * @return
+     */
+    @GET("news/{id}")
+    Flowable<DailyNewsDetailsBean> getDailyNewsDetails(@Path("id") int id);
+
+    /**
      * 获取往期日报
+     *
      * @return
      */
     @GET("news/before/{date}")
@@ -76,13 +86,4 @@ public interface ApiService {
      */
     @GET("news/hot")
     Flowable<HotNewsBean> getHotNewsData();
-
-    /**
-     * 知乎热门内容
-     *
-     * @param news_id  ID从HotNewsBean中取
-     * @return
-     */
-    @GET("news/{news_id}")
-    Flowable<HotNewArticleBean> getHotNewArticle(@Path("news_id") String news_id);
 }

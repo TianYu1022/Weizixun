@@ -86,6 +86,8 @@ dependencies {
     implementation files('libs\\umeng-sharetool-7.0.2.jar')
     implementation files('libs\\hyphenatechat_3.6.7.jar')
     implementation files('libs\\BaiduLBS_Android.jar')
+    implementation files('libs\\jcore-android-2.3.8.jar')
+    implementation files('libs\\jpush-android-3.6.6.jar')
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
@@ -120,4 +122,7 @@ dependencies {
 
     //日历
     implementation 'com.github.prolificinteractive:material-calendarview:1.6.0'
+
+    //htmltextview
+    implementation 'org.sufficientlysecure:html-textview:3.9'
 }
