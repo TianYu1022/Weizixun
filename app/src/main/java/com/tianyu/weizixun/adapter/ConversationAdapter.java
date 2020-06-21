@@ -19,7 +19,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * 聊天记录适配器
+ * @date：2020/6/21
+ * @describe：聊天记录适配器
+ * @author：TianYu
  */
 public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapter.ViewHolder> {
     private ArrayList<EMConversation> list;
@@ -77,5 +79,4 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
     public interface OnItemClickListener {
         void onItemClick(int position);
     }
-
 }

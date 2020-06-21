@@ -1,7 +1,6 @@
 package com.tianyu.weizixun.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,11 +20,15 @@ import com.youth.banner.BannerConfig;
 import com.youth.banner.loader.ImageLoader;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+/**
+ * @date：2020/6/21
+ * @describe：日报三布局，适配器判断是否有banner，来判断应该为几个布局
+ * @author：TianYu
+ */
 public class DailyNewRvAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Context context;
     private ArrayList<DailyNewsBean.StoriesBean> datas;
@@ -33,6 +36,7 @@ public class DailyNewRvAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private ArrayList<String> title;
     private final LayoutInflater from;
     private OnItemClickListener onItemClickListener;
+    private int newPosition;
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
@@ -92,20 +96,27 @@ public class DailyNewRvAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             viewHolderTwo.dailyTitle.setText(title.get(0));
         } else {
             ViewHolderThree viewHolderThree = (ViewHolderThree) holder;
-            viewHolderThree.tvDailyTitle.setText(datas.get(position - 2).getTitle());
-            //得到的images是个集合
-            List<String> images = datas.get(position - 2).getImages();
-            for (String image : images) {
-                Glide.with(context)
-                        .load(image)
-                        .apply(RequestOptions.bitmapTransform(new CircleCrop()))
-                        .into(viewHolderThree.ivDailyImg);
+            newPosition = position;
+            //判断有没有banner
+            if (bannerDatas != null && bannerDatas.size() > 0) {
+                //有，就是三布局
+                newPosition = position - 2;
+            } else {
+                //只有数据和日期
+                newPosition = position - 1;
             }
+            DailyNewsBean.StoriesBean storiesBean = datas.get(newPosition);
+            viewHolderThree.tvDailyTitle.setText(storiesBean.getTitle());
+            Glide.with(context)
+                    .load(storiesBean.getImages().get(0))
+                    .apply(RequestOptions.bitmapTransform(new CircleCrop()))
+                    .into(viewHolderThree.ivDailyImg);
+
             viewHolderThree.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (onItemClickListener != null) {
-                        onItemClickListener.onItemClick(position - 2);
+                        onItemClickListener.onItemClick(newPosition);
                     }
                 }
             });
@@ -114,19 +125,32 @@ public class DailyNewRvAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public int getItemCount() {
-        return datas.size() + 2;
+        if (bannerDatas != null && bannerDatas.size() > 0) {
+            return datas.size() + 1 + 1;
+        } else {
+            return datas.size() + 1;
+        }
     }
 
     @Override
     public int getItemViewType(int position) {
-        if (position == 0) {
-            return VIEW_TYPE_ONE;
-        } else if (position == 1) {
-            return VIEW_TYPE_TWO;
+        if (bannerDatas != null && bannerDatas.size() > 0) {
+            if (position == 0) {
+                return VIEW_TYPE_ONE;
+            } else if (position == 1) {
+                return VIEW_TYPE_TWO;
+            } else {
+                return VIEW_TYPE_THREE;
+            }
         } else {
-            return VIEW_TYPE_THREE;
+            if (position == 0) {
+                return VIEW_TYPE_TWO;
+            } else {
+                return VIEW_TYPE_THREE;
+            }
         }
     }
+
 
     class ViewHolderOne extends RecyclerView.ViewHolder {
         @BindView(R.id.daily_banner)

@@ -123,6 +123,12 @@ dependencies {
     //日历
     implementation 'com.github.prolificinteractive:material-calendarview:1.6.0'
 
-    //htmltextview
+    //HtmlTextView  用于显示HTML格式的TextView
     implementation 'org.sufficientlysecure:html-textview:3.9'
+
+    //搜索框
+    implementation 'com.miguelcatalan:materialsearchview:1.4.0'
+
+    //粘性头布局
+    implementation 'com.github.qdxxxx:StickyHeaderDecoration:1.0.1'
 }

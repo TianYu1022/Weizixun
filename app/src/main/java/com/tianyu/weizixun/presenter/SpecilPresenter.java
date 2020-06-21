@@ -17,6 +17,7 @@ public class SpecilPresenter extends BasePresenter implements SpecilCallback {
     @Override
     protected void initModel() {
         mModel = new SpecilModel();
+        addModel(mModel);
     }
 
     @Override

@@ -19,6 +19,11 @@ import java.util.ArrayList;
 
 import static com.hyphenate.chat.EMClient.TAG;
 
+/**
+ * @date：2020/6/21
+ * @describe：发送的消息，都存放起来
+ * @author：TianYu
+ */
 public class EMMessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private ArrayList<EMMessage> list;
     private Context context;

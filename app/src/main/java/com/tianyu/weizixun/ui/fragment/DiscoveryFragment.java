@@ -13,6 +13,7 @@ import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
 import com.tianyu.weizixun.R;
 import com.tianyu.weizixun.base.BaseFragment;
+import com.tianyu.weizixun.ui.activity.ItInfoActivity;
 import com.tianyu.weizixun.ui.activity.LoginActivity;
 import com.tianyu.weizixun.ui.activity.MainActivity;
 import com.tianyu.weizixun.ui.activity.ZhihuActivity;
@@ -54,6 +55,7 @@ public class DiscoveryFragment extends BaseFragment {
                 logout();
                 break;
             case R.id.cl_it_zixun:
+                startActivity(new Intent(getActivity(), ItInfoActivity.class));
                 break;
             case R.id.cl_tencent:
                 break;

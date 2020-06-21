@@ -4,12 +4,15 @@ import android.app.ActivityManager;
 import android.app.Application;
 import android.content.pm.PackageManager;
 
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.multidex.MultiDex;
 
 import com.baidu.mapapi.CoordType;
 import com.baidu.mapapi.SDKInitializer;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMOptions;
+import com.tianyu.weizixun.utils.SharedPreferencesUtil;
+import com.tianyu.weizixun.utils.UIModeUtil;
 import com.umeng.commonsdk.UMConfigure;
 import com.umeng.socialize.PlatformConfig;
 
@@ -20,6 +23,8 @@ import cn.jpush.android.api.JPushInterface;
 
 public class WzxApplication extends Application {
     private static WzxApplication app;
+    //日间模式
+    public static int mMode = AppCompatDelegate.MODE_NIGHT_NO;
 
     @Override
     public void onCreate() {
@@ -31,6 +36,16 @@ public class WzxApplication extends Application {
         initIm();
         initMap();
         initJPush();
+        dayNightMode();
+    }
+
+    /**
+     * APP刚刚，启动加载的模式
+     */
+    private void dayNightMode() {
+        //从保存模式中取出来，防止下次进来模式发生改变
+        mMode = (int) SharedPreferencesUtil.getParam(this, Constants.MODE, AppCompatDelegate.MODE_NIGHT_NO);
+        UIModeUtil.setAppMode(mMode);
     }
 
     private void initJPush() {

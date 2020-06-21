@@ -20,10 +20,16 @@ import com.tianyu.weizixun.ui.activity.DailyNewsDetailsActivity;
 import com.tianyu.weizixun.view.DailyNewView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
+/**
+ * @date：2020/6/16
+ * @describe：日报三布局，适配器判断是否有banner
+ * @author：TianYu
+ */
 public class DailyNewsFragment extends BaseMvpFragment<DailyNewPresenter, DailyNewView> implements DailyNewView {
     @BindView(R.id.rv_daily_new)
     RecyclerView rvDailyNew;
@@ -70,17 +76,22 @@ public class DailyNewsFragment extends BaseMvpFragment<DailyNewPresenter, DailyN
 
     @Override
     public void onSuccess(DailyNewsBean dailyNewsBean) {
-        if (dailyNewsBean.getTop_stories() != null) {
-            datas.addAll(dailyNewsBean.getStories());
-            bannerDatas.addAll(dailyNewsBean.getTop_stories());
-            adapter.notifyDataSetChanged();
-        } else {
+        //每次清空原集合的所有内容
+        if (datas != null) {
             datas.clear();
-            title.clear();
-            title.add(date);
-            datas.addAll(dailyNewsBean.getStories());
-            adapter.notifyDataSetChanged();
         }
+        if (bannerDatas != null) {
+            bannerDatas.clear();
+        }
+        List<DailyNewsBean.TopStoriesBean> top_stories = dailyNewsBean.getTop_stories();
+        if (top_stories != null && top_stories.size() > 0) {
+            bannerDatas.addAll(top_stories);
+        }
+        List<DailyNewsBean.StoriesBean> stories = dailyNewsBean.getStories();
+        if (stories != null && stories.size() > 0) {
+            datas.addAll(stories);
+        }
+        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -94,6 +105,13 @@ public class DailyNewsFragment extends BaseMvpFragment<DailyNewPresenter, DailyN
         startActivityForResult(intent, 100);
     }
 
+    /**
+     * 回传回来的日期中的内容
+     *
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

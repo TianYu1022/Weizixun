@@ -27,13 +27,13 @@ import butterknife.BindView;
 
 /**
  * @date：2020/6/16
- * @describe：知乎详情
+ * @describe：知乎详情页面，上拉滚动toolbar
  * @author：TianYu
  */
 public class DailyNewsDetailsActivity extends BaseMvpActivity<DailyNewsDetailsPresenter, DailyNewsDetailsView> implements DailyNewsDetailsView {
 
-    @BindView(R.id.top_img)
-    ImageView topImg;
+    @BindView(R.id.iv_top)
+    ImageView ivTop;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.appbar)
@@ -69,12 +69,24 @@ public class DailyNewsDetailsActivity extends BaseMvpActivity<DailyNewsDetailsPr
         String imageUrl = intent.getStringExtra(Constants.IMAGE);
 
         clb.setTitle(title);
-        Glide.with(this).load(imageUrl).into(topImg);
+        Glide.with(this).load(imageUrl).into(ivTop);
         //扩张时的颜色
         clb.setExpandedTitleColor(Color.RED);
         //收缩时的颜色
         clb.setCollapsedTitleTextColor(Color.WHITE);
         mPresenter.getData(id);
+    }
+
+    @Override
+    public void onSuccess(DailyNewsDetailsBean dailyNewsDetailsBean) {
+        String body = dailyNewsDetailsBean.getBody();
+        //htmlText用于显示HTML格式的TextView
+        htmlText.setHtml(body, new HtmlHttpImageGetter(htmlText));
+    }
+
+    @Override
+    public void onFail(String error) {
+        toast(error);
     }
 
     @Override
@@ -101,14 +113,4 @@ public class DailyNewsDetailsActivity extends BaseMvpActivity<DailyNewsDetailsPr
         });
     }
 
-    @Override
-    public void onSuccess(DailyNewsDetailsBean dailyNewsDetailsBean) {
-        String body = dailyNewsDetailsBean.getBody();
-        htmlText.setHtml(body, new HtmlHttpImageGetter(htmlText));
-    }
-
-    @Override
-    public void onFail(String error) {
-        toast(error);
-    }
 }

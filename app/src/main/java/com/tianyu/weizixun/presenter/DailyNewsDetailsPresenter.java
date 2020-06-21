@@ -21,6 +21,7 @@ public class DailyNewsDetailsPresenter extends BasePresenter implements DailyNew
     @Override
     protected void initModel() {
         mModel = new DailyNewsDetailsModel();
+        addModel(mModel);
     }
 
     @Override

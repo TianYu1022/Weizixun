@@ -278,7 +278,8 @@ public class ChatGroupActivity extends AppCompatActivity {
      * 记得在不需要的时候移除listener，如在activity的onDestroy()时
      */
     @Override
-    protected void onDestroy() {
+    protected void
+    onDestroy() {
         super.onDestroy();
         EMClient.getInstance().chatManager().removeMessageListener(mMsgListener);
     }

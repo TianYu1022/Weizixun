@@ -15,6 +15,7 @@ public class HotPresenter extends BasePresenter implements HotCallback {
     @Override
     protected void initModel() {
         mModel = new HotModel();
+        addModel(mModel);
     }
 
     @Override

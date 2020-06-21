@@ -3,9 +3,13 @@ package com.tianyu.weizixun.net;
 import com.tianyu.weizixun.bean.DailyNewsBean;
 import com.tianyu.weizixun.bean.DailyNewsDetailsBean;
 import com.tianyu.weizixun.bean.HotNewsBean;
+import com.tianyu.weizixun.bean.ItInfoBean;
 import com.tianyu.weizixun.bean.LoginBean;
+import com.tianyu.weizixun.bean.NaviBean;
 import com.tianyu.weizixun.bean.RegisterBean;
+import com.tianyu.weizixun.bean.SearchBean;
 import com.tianyu.weizixun.bean.SpecilBean;
+import com.tianyu.weizixun.bean.WxArticleBean;
 
 import io.reactivex.Flowable;
 import retrofit2.http.Field;
@@ -16,6 +20,9 @@ import retrofit2.http.Path;
 
 public interface ApiService {
     String baseUrl = "https://www.wanandroid.com/user/";
+    String baseZhihuUrl = "https://news-at.zhihu.com/api/4/";
+    String baseWanAndroidUrl = "https://www.wanandroid.com/";
+
 
     /**
      * 注册,
@@ -44,7 +51,6 @@ public interface ApiService {
                               @Field("password") String password);
 
 
-    String baseZhihuUrl = "https://news-at.zhihu.com/api/4/";
 
     /**
      * 知乎日报
@@ -64,7 +70,7 @@ public interface ApiService {
     Flowable<DailyNewsDetailsBean> getDailyNewsDetails(@Path("id") int id);
 
     /**
-     * 获取往期日报
+     * 获取日报往期数据
      *
      * @return
      */
@@ -86,4 +92,43 @@ public interface ApiService {
      */
     @GET("news/hot")
     Flowable<HotNewsBean> getHotNewsData();
+
+
+    /**
+     * 获取微信公众号
+     *
+     * @return
+     */
+    @GET("wxarticle/chapters/json")
+    Flowable<ItInfoBean> getItInfoData();
+
+    /**
+     * 获取公众号文章
+     *
+     * @param id
+     * @param page
+     * @return
+     */
+    @GET("wxarticle/list/{id}/{page}/json")
+    Flowable<WxArticleBean> getWxArticleData(@Path("id") int id, @Path("page") int page);
+
+    /**
+     * 搜索
+     *
+     * @param page    页码,从1开始
+     * @param keyword 关键字
+     * @return
+     */
+    @POST("article/query/{page}/json")
+    @FormUrlEncoded
+    Flowable<SearchBean> getSearchData(@Path("page") int page,
+                                       @Field("k") String keyword);
+
+    /**
+     * 获取导航数据
+     *
+     * @return
+     */
+    @GET("navi/json")
+    Flowable<NaviBean> getNaviData();
 }

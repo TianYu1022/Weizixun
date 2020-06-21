@@ -2,6 +2,9 @@ package com.tianyu.weizixun.ui.activity;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
+import android.os.PersistableBundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -11,6 +14,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -24,9 +28,16 @@ import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
 import com.tianyu.weizixun.R;
 import com.tianyu.weizixun.base.BaseActivity;
+import com.tianyu.weizixun.common.Constants;
 import com.tianyu.weizixun.ui.fragment.ContactsFragment;
 import com.tianyu.weizixun.ui.fragment.ConversationFragment;
 import com.tianyu.weizixun.ui.fragment.DiscoveryFragment;
+import com.tianyu.weizixun.utils.SharedPreferencesUtil;
+import com.tianyu.weizixun.utils.UIModeUtil;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 
@@ -48,11 +59,16 @@ public class MainActivity extends BaseActivity {
     private FragmentManager fragmentManager;
     private ArrayList<String> titles;
     private ArrayList<Fragment> fragments;
-    private int hideFragmentPosition;
+    private int hideFragmentPosition = 0;
 
     @Override
     protected void initView() {
         super.initView();
+        //夜间模式
+        int mode = (int) SharedPreferencesUtil.getParam(this, Constants.MODE, AppCompatDelegate.MODE_NIGHT_NO);
+        UIModeUtil.setAppMode(mode);
+        EventBus.getDefault().register(this);
+
         //设置toolbar
         toolbarMain.setLogo(R.drawable.ic_icon);
         toolbarMain.setTitle(getResources().getString(R.string.conversation));
@@ -92,9 +108,9 @@ public class MainActivity extends BaseActivity {
         Fragment showFragment = fragments.get(showFragmntPosition);//当前显示fragment
         Fragment hideFragment = fragments.get(hideFragmentPosition);//隐藏fragment
 
-        //判断是否添加
+        //判断是否添加  replace
         if (!showFragment.isAdded()) {
-            transaction.add(R.id.fl_container, showFragment);
+            transaction.replace(R.id.fl_container, showFragment);
         }
 
         //隐藏显示fragment
@@ -104,11 +120,21 @@ public class MainActivity extends BaseActivity {
         hideFragmentPosition = showFragmntPosition;
     }
 
+
     private void initFragment() {
         fragments = new ArrayList<>();
-        fragments.add(new ConversationFragment());//会话
-        fragments.add(new ContactsFragment());//联系人
-        fragments.add(new DiscoveryFragment());//发现
+        ConversationFragment conversationFragment = new ConversationFragment();//会话
+        ContactsFragment contactsFragment = new ContactsFragment();//联系人
+        DiscoveryFragment discoveryFragment = new DiscoveryFragment();//发现
+        if (!fragments.contains(conversationFragment)) {
+            fragments.add(conversationFragment);
+        }
+        if (!fragments.contains(contactsFragment)) {
+            fragments.add(contactsFragment);
+        }
+        if (!fragments.contains(discoveryFragment)) {
+            fragments.add(discoveryFragment);
+        }
     }
 
     private void initTabs() {
@@ -203,11 +229,9 @@ public class MainActivity extends BaseActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.item_zhihu:
-                        Intent intent = new Intent(MainActivity.this, ZhihuActivity.class);
-                        startActivity(intent);
+                        startActivity(new Intent(MainActivity.this, ZhihuActivity.class));
                         break;
                     case R.id.item_wechat:
-
                         break;
                     case R.id.item_chat_group:
                         startActivity(new Intent(MainActivity.this, ChatGroupActivity.class));
@@ -217,6 +241,12 @@ public class MainActivity extends BaseActivity {
                         break;
                     case R.id.item_logout:
                         logout();
+                        break;
+                    case R.id.item_settings:
+                        startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+                        break;
+                    case R.id.item_navigation:
+                        startActivity(new Intent(MainActivity.this, NavigationActivity.class));
                         break;
                 }
                 return false;
@@ -262,5 +292,17 @@ public class MainActivity extends BaseActivity {
     @Override
     protected int getLayoutId() {
         return R.layout.activity_main;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onTouchEvent(String msg) {
+        //收到这个消息后关掉这个activity
+        finish();
     }
 }
